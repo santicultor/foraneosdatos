@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sabana, tu Segundo Hogar</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --navy: #00205B; --navy-mid: #00387b; --navy-deep: #010e2e;
+  --gold: #c8a96e; --gold-light: #e8c98e;
+  --cream: #f5f0e8; --white: #ffffff; --text-dark: #0a0f1e;
+}
+html { scroll-behavior: smooth; }
+body { font-family: 'DM Sans', sans-serif; background: var(--navy); color: var(--white); overflow-x: hidden; }
+
+/* HERO */
+.hero { position: relative; height: 100vh; min-height: 600px; display: flex; align-items: flex-end; overflow: hidden; }
+.hero-bg {
+  position: absolute; inset: 0;
+  background: radial-gradient(ellipse at 15% 60%, rgba(0,56,123,0.95) 0%, transparent 55%),
+    radial-gradient(ellipse at 85% 15%, rgba(200,169,110,0.1) 0%, transparent 45%);
+  background-color: #02102e;
+}
+.hero-pattern { position: absolute; inset: 0; background-image: radial-gradient(rgba(255,255,255,0.035) 1px, transparent 1px); background-size: 44px 44px; }
+.hero-rings { position: absolute; inset: 0; overflow: hidden; pointer-events: none; }
+.hero-rings::before { content: ''; position: absolute; width: 600px; height: 600px; border: 1px solid rgba(200,169,110,0.07); border-radius: 50%; right: -100px; top: -150px; }
+.hero-rings::after { content: ''; position: absolute; width: 900px; height: 900px; border: 1px solid rgba(200,169,110,0.04); border-radius: 50%; right: -250px; top: -300px; }
+.hero-content { position: relative; z-index: 2; padding: 0 7vw 7vh; width: 100%; }
+.hero-eyebrow { font-size: 11px; font-weight: 500; letter-spacing: 0.28em; text-transform: uppercase; color: var(--gold-light); margin-bottom: 20px; opacity: 0; transform: translateY(20px); animation: fadeUp 0.8s 0.3s ease forwards; }
+.hero-title { font-family: 'Playfair Display', serif; font-size: clamp(52px, 8.5vw, 100px); font-weight: 900; line-height: 0.92; letter-spacing: -0.025em; margin-bottom: 24px; opacity: 0; transform: translateY(30px); animation: fadeUp 0.9s 0.5s ease forwards; }
+.hero-title span { color: var(--gold); }
+.hero-sub { font-size: clamp(15px, 1.8vw, 19px); font-weight: 300; line-height: 1.65; max-width: 500px; color: rgba(255,255,255,0.75); margin-bottom: 18px; opacity: 0; transform: translateY(20px); animation: fadeUp 0.9s 0.7s ease forwards; }
+.hero-obj { font-size: 13px; font-weight: 300; line-height: 1.7; max-width: 560px; color: rgba(255,255,255,0.48); border-left: 2px solid var(--gold); padding-left: 16px; margin-bottom: 44px; opacity: 0; transform: translateY(20px); animation: fadeUp 0.9s 0.9s ease forwards; }
+.scroll-hint { display: flex; align-items: center; gap: 12px; font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--gold-light); opacity: 0; cursor: pointer; animation: fadeUp 0.9s 1.3s ease forwards; }
+.scroll-line { width: 40px; height: 1px; background: var(--gold); animation: scrollPulse 2s 1.6s ease-in-out infinite; }
+@keyframes scrollPulse { 0%,100%{width:40px;opacity:1} 50%{width:64px;opacity:0.5} }
+
+/* SHARED */
+.section-label { font-size: 10px; font-weight: 500; letter-spacing: 0.28em; text-transform: uppercase; color: var(--gold); margin-bottom: 12px; }
+.section-label.dark { color: var(--navy-mid); }
+.section-heading { font-family: 'Playfair Display', serif; font-size: clamp(30px, 4vw, 50px); font-weight: 700; line-height: 1.08; margin-bottom: 48px; }
+.section-heading.dark { color: var(--navy); margin-bottom: 16px; }
+
+/* PURPOSE */
+.section-purpose { background: var(--cream); color: var(--text-dark); padding: 88px 7vw; position: relative; overflow: hidden; }
+.section-purpose::before { content: '"'; position: absolute; top: -60px; left: 4vw; font-family: 'Playfair Display', serif; font-size: 320px; color: var(--navy); opacity: 0.05; line-height: 1; pointer-events: none; }
+.purpose-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: center; }
+.purpose-label { font-size: 10px; font-weight: 500; letter-spacing: 0.25em; text-transform: uppercase; color: var(--navy-mid); margin-bottom: 20px; }
+.purpose-heading { font-family: 'Playfair Display', serif; font-size: clamp(30px, 3.5vw, 50px); font-weight: 700; line-height: 1.1; color: var(--navy); margin-bottom: 20px; }
+.purpose-body { font-size: 15px; line-height: 1.85; color: #3a3a5c; font-weight: 300; margin-bottom: 22px; }
+.objetivo-pill { display: inline-block; background: var(--navy); color: var(--gold-light); border-radius: 100px; padding: 10px 20px; font-size: 12px; font-weight: 400; line-height: 1.5; }
+.challenge-cards { display: flex; flex-direction: column; gap: 14px; }
+.challenge-card { background: var(--navy); color: var(--white); border-radius: 12px; padding: 18px 22px; display: flex; gap: 14px; align-items: flex-start; transform: translateX(40px); opacity: 0; transition: transform 0.6s ease, opacity 0.6s ease; }
+.challenge-card.visible { transform: translateX(0); opacity: 1; }
+.challenge-card:nth-child(2){transition-delay:0.1s} .challenge-card:nth-child(3){transition-delay:0.2s}
+.challenge-icon { font-size: 26px; flex-shrink: 0; margin-top: 2px; }
+.challenge-title { font-family: 'Playfair Display', serif; font-size: 15px; font-weight: 700; margin-bottom: 4px; }
+.challenge-desc { font-size: 12px; color: rgba(255,255,255,0.6); line-height: 1.55; font-weight: 300; }
+
+/* TEAM */
+.section-team { background: var(--navy-deep); padding: 72px 7vw; border-top: 1px solid rgba(200,169,110,0.12); }
+.team-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 16px; }
+.team-card { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.07); border-radius: 12px; padding: 20px 14px; text-align: center; opacity: 0; transform: translateY(16px); transition: opacity 0.5s ease, transform 0.5s ease, background 0.3s; }
+.team-card.visible { opacity: 1; transform: translateY(0); }
+.team-card:hover { background: rgba(0,56,123,0.4); border-color: rgba(200,169,110,0.3); }
+.team-card:nth-child(2){transition-delay:0.08s} .team-card:nth-child(3){transition-delay:0.16s} .team-card:nth-child(4){transition-delay:0.24s} .team-card:nth-child(5){transition-delay:0.32s}
+.team-avatar { width: 50px; height: 50px; border-radius: 50%; margin: 0 auto 12px; background: linear-gradient(135deg, var(--navy-mid), var(--gold)); display: flex; align-items: center; justify-content: center; font-family: 'Playfair Display', serif; font-size: 17px; font-weight: 700; color: white; }
+.team-name { font-size: 12px; font-weight: 400; color: rgba(255,255,255,0.8); line-height: 1.45; }
+
+/* ANTECEDENTES */
+.section-antecedentes { background: var(--cream); color: var(--text-dark); padding: 88px 7vw; }
+.ant-intro { font-size: 15px; font-weight: 300; color: #3a3a5c; line-height: 1.8; max-width: 600px; margin-bottom: 48px; }
+.ant-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; margin-bottom: 44px; }
+.ant-card { background: var(--white); border: 1px solid rgba(0,32,91,0.09); border-radius: 14px; padding: 26px 22px; opacity: 0; transform: translateY(20px); transition: opacity 0.6s ease, transform 0.6s ease, box-shadow 0.3s; }
+.ant-card.visible { opacity: 1; transform: translateY(0); }
+.ant-card:hover { box-shadow: 0 8px 32px rgba(0,32,91,0.1); }
+.ant-card:nth-child(2){transition-delay:0.1s} .ant-card:nth-child(3){transition-delay:0.2s}
+.ant-icon { font-size: 28px; margin-bottom: 12px; }
+.ant-title { font-family: 'Playfair Display', serif; font-size: 16px; font-weight: 700; color: var(--navy); margin-bottom: 10px; }
+.ant-desc { font-size: 13px; color: #3a3a5c; line-height: 1.7; font-weight: 300; }
+.ant-needs-label { font-size: 10px; font-weight: 500; letter-spacing: 0.22em; text-transform: uppercase; color: var(--navy-mid); margin-bottom: 14px; }
+.ant-needs-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+.ant-need { background: rgba(0,32,91,0.06); border: 1px solid rgba(0,32,91,0.09); border-radius: 8px; padding: 11px 15px; font-size: 12px; color: var(--navy); font-weight: 400; opacity: 0; transform: translateY(8px); transition: opacity 0.5s ease, transform 0.5s ease; }
+.ant-need.visible { opacity: 1; transform: translateY(0); }
+.ant-need:nth-child(2){transition-delay:0.05s} .ant-need:nth-child(3){transition-delay:0.1s} .ant-need:nth-child(4){transition-delay:0.15s} .ant-need:nth-child(5){transition-delay:0.2s} .ant-need:nth-child(6){transition-delay:0.25s}
+
+/* PROCESS */
+.section-process { background: var(--navy); padding: 88px 7vw; }
+.steps-track { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0; position: relative; }
+.steps-track::before { content: ''; position: absolute; top: 32px; left: calc(12.5% + 20px); right: calc(12.5% + 20px); height: 2px; background: linear-gradient(to right, var(--gold) 75%, rgba(255,255,255,0.15) 75%); z-index: 0; }
+.step { position: relative; z-index: 1; padding: 0 18px; opacity: 0; transform: translateY(28px); transition: opacity 0.7s ease, transform 0.7s ease; }
+.step.visible { opacity: 1; transform: translateY(0); }
+.step:nth-child(2){transition-delay:0.12s} .step:nth-child(3){transition-delay:0.24s} .step:nth-child(4){transition-delay:0.36s}
+.step-num-wrap { width: 64px; height: 64px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-bottom: 18px; border: 2px solid var(--gold); }
+.step-num-wrap.done { background: var(--gold); }
+.step-num-wrap.next { background: transparent; border-color: rgba(255,255,255,0.18); }
+.step-num { font-family: 'Playfair Display', serif; font-size: 22px; font-weight: 700; color: var(--navy); }
+.step-num-wrap.next .step-num { color: rgba(255,255,255,0.28); }
+.step-status { font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold); margin-bottom: 6px; font-weight: 500; }
+.step-status.coming { color: rgba(255,255,255,0.3); }
+.step-title { font-family: 'Playfair Display', serif; font-size: 17px; font-weight: 700; margin-bottom: 6px; line-height: 1.2; }
+.step-date { font-size: 11px; color: var(--gold-light); margin-bottom: 12px; }
+.step-date.coming { color: rgba(255,255,255,0.35); }
+.step-items { list-style: none; }
+.step-items li { font-size: 12px; color: rgba(255,255,255,0.6); padding: 4px 0; border-bottom: 1px solid rgba(255,255,255,0.06); display: flex; align-items: flex-start; gap: 8px; line-height: 1.45; font-weight: 300; }
+.step-items li::before { content: '—'; color: var(--gold); flex-shrink: 0; font-size: 10px; margin-top: 2px; }
+.step-items li.coming-item { color: rgba(255,255,255,0.28); }
+.step-items li.coming-item::before { color: rgba(255,255,255,0.18); }
+
+/* CONVERSA DETALLE */
+.section-conversa { background: #060e22; padding: 88px 7vw; }
+.conversa-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: start; margin-bottom: 56px; }
+.conversa-stat-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-bottom: 28px; }
+.cstat { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 22px 16px; text-align: center; opacity: 0; transform: translateY(16px); transition: opacity 0.6s ease, transform 0.6s ease; }
+.cstat.visible { opacity: 1; transform: translateY(0); }
+.cstat:nth-child(2){transition-delay:0.1s} .cstat:nth-child(3){transition-delay:0.2s}
+.cstat-num { font-family: 'Playfair Display', serif; font-size: 42px; font-weight: 900; color: var(--gold); line-height: 1; margin-bottom: 8px; }
+.cstat-desc { font-size: 12px; color: rgba(255,255,255,0.5); line-height: 1.5; font-weight: 300; }
+.sat-label { font-size: 12px; color: rgba(255,255,255,0.5); margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; }
+.sat-label span { color: var(--gold-light); font-size: 18px; font-weight: 500; font-family: 'Playfair Display', serif; }
+.sat-bar { height: 8px; background: rgba(255,255,255,0.08); border-radius: 4px; overflow: hidden; }
+.sat-fill { height: 100%; background: linear-gradient(to right, var(--gold), var(--gold-light)); border-radius: 4px; width: 0; transition: width 1.6s cubic-bezier(0.4,0,0.2,1); }
+.conversa-body { font-size: 14px; font-weight: 300; color: rgba(255,255,255,0.65); line-height: 1.8; }
+.conversa-programs { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 18px; }
+.prog-tag { background: rgba(0,56,123,0.5); border: 1px solid rgba(0,100,200,0.25); border-radius: 100px; padding: 5px 14px; font-size: 12px; color: #8ec4f8; }
+.hallazgos-label { font-size: 10px; font-weight: 500; letter-spacing: 0.28em; text-transform: uppercase; color: var(--gold); margin-bottom: 20px; }
+.hallazgos-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+.hallazgo { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.07); border-radius: 12px; padding: 20px 18px; opacity: 0; transform: translateY(16px); transition: opacity 0.6s ease, transform 0.6s ease; }
+.hallazgo.visible { opacity: 1; transform: translateY(0); }
+.hallazgo:hover { background: rgba(0,56,123,0.35); border-color: rgba(200,169,110,0.25); }
+.hallazgo:nth-child(2){transition-delay:0.08s} .hallazgo:nth-child(3){transition-delay:0.16s} .hallazgo:nth-child(4){transition-delay:0.24s} .hallazgo:nth-child(5){transition-delay:0.32s} .hallazgo:nth-child(6){transition-delay:0.40s}
+.hallazgo-icon { font-size: 24px; margin-bottom: 10px; }
+.hallazgo-text { font-size: 13px; color: rgba(255,255,255,0.68); line-height: 1.6; font-weight: 300; }
+
+/* INTERESTS */
+.section-interests { background: var(--navy); padding: 88px 7vw; position: relative; overflow: hidden; }
+.section-interests::after { content: ''; position: absolute; top: -80px; right: -80px; width: 460px; height: 460px; background: radial-gradient(circle, rgba(0,56,123,0.22) 0%, transparent 70%); pointer-events: none; }
+.interests-intro { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; margin-bottom: 52px; }
+.interests-body { font-size: 15px; font-weight: 300; color: rgba(255,255,255,0.65); line-height: 1.8; }
+.insight-box { background: linear-gradient(135deg, rgba(0,56,123,0.35), rgba(0,32,91,0.55)); border: 1px solid rgba(200,169,110,0.28); border-radius: 16px; padding: 28px; }
+.insight-quote { font-family: 'Playfair Display', serif; font-size: 19px; font-weight: 400; font-style: italic; line-height: 1.5; color: var(--gold-light); margin-bottom: 14px; }
+.insight-attr { font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(255,255,255,0.35); }
+.nuclei-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 14px; }
+.nucleus { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 20px 14px; text-align: center; cursor: pointer; transition: all 0.3s ease; opacity: 0; transform: translateY(18px); }
+.nucleus.visible { opacity: 1; transform: translateY(0); }
+.nucleus:hover { background: rgba(0,56,123,0.5); border-color: rgba(200,169,110,0.4); transform: translateY(-4px); }
+.nucleus:nth-child(2){transition-delay:0.1s} .nucleus:nth-child(3){transition-delay:0.2s} .nucleus:nth-child(4){transition-delay:0.3s} .nucleus:nth-child(5){transition-delay:0.4s}
+.nucleus-emoji { font-size: 30px; margin-bottom: 10px; }
+.nucleus-name { font-family: 'Playfair Display', serif; font-size: 14px; font-weight: 700; margin-bottom: 6px; }
+.nucleus-tags { font-size: 11px; color: rgba(255,255,255,0.42); line-height: 1.5; font-weight: 300; }
+
+/* DATA */
+.section-data { background: var(--navy-deep); padding: 88px 7vw; border-top: 1px solid rgba(200,169,110,0.12); }
+.data-intro { font-size: 14px; font-weight: 300; color: rgba(255,255,255,0.5); margin-bottom: 36px; max-width: 580px; }
+.data-cards-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+.data-card { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 14px; padding: 26px 22px; cursor: pointer; position: relative; overflow: hidden; transition: border-color 0.3s, background 0.3s, transform 0.3s; }
+.data-card:hover { background: rgba(0,56,123,0.35); border-color: rgba(200,169,110,0.35); transform: translateY(-3px); }
+.data-card.objetivo { border-color: rgba(200,169,110,0.14); background: rgba(200,169,110,0.04); }
+.data-card.objetivo:hover { background: rgba(200,169,110,0.09); border-color: rgba(200,169,110,0.4); }
+.data-card.open { background: rgba(0,56,123,0.45); border-color: var(--gold); transform: none; }
+.data-big { font-family: 'Playfair Display', serif; font-size: 50px; font-weight: 900; color: var(--white); line-height: 1; margin-bottom: 8px; }
+.data-card.objetivo .data-big { color: var(--gold); }
+.data-desc { font-size: 12px; color: rgba(255,255,255,0.55); line-height: 1.5; margin-bottom: 14px; font-weight: 300; }
+.data-tag { display: inline-block; font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; padding: 3px 10px; border-radius: 100px; font-weight: 500; }
+.data-tag.confirmed { background: rgba(0,56,123,0.5); color: #7ab3f0; border: 1px solid rgba(122,179,240,0.2); }
+.data-tag.objetivo-tag { background: rgba(200,169,110,0.14); color: var(--gold-light); border: 1px solid rgba(200,169,110,0.24); }
+.data-card-detail { display: none; margin-top: 18px; padding-top: 14px; border-top: 1px solid rgba(255,255,255,0.1); font-size: 12px; color: rgba(255,255,255,0.65); line-height: 1.75; font-weight: 300; animation: fadeIn 0.3s ease; }
+.data-card.open .data-card-detail { display: block; }
+.data-card-front::after { content: '↓'; position: absolute; top: 18px; right: 18px; font-size: 13px; color: rgba(255,255,255,0.22); transition: transform 0.3s, color 0.3s; }
+.data-card.open .data-card-front::after { transform: rotate(180deg); color: var(--gold); }
+
+/* NEXT */
+.section-next { background: var(--cream); color: var(--text-dark); padding: 88px 7vw; }
+.next-grid { display: grid; grid-template-columns: 1fr 1.2fr; gap: 64px; align-items: start; }
+.next-heading { font-family: 'Playfair Display', serif; font-size: clamp(30px, 4vw, 48px); font-weight: 700; color: var(--navy); line-height: 1.1; margin-bottom: 18px; }
+.next-body { font-size: 14px; font-weight: 300; color: #3a3a5c; line-height: 1.8; margin-bottom: 28px; }
+.date-badge { display: inline-flex; align-items: center; gap: 10px; background: var(--navy); color: var(--gold-light); border-radius: 100px; padding: 10px 20px; font-size: 13px; font-weight: 400; }
+.next-actions { display: flex; flex-direction: column; gap: 10px; }
+.action-row { display: flex; align-items: center; gap: 14px; padding: 14px 18px; border-radius: 10px; background: white; border: 1px solid rgba(0,32,91,0.09); opacity: 0; transform: translateX(28px); transition: opacity 0.6s ease, transform 0.6s ease, border-color 0.2s; }
+.action-row.visible { opacity: 1; transform: translateX(0); }
+.action-row:hover { border-color: var(--navy-mid); }
+.action-row:nth-child(2){transition-delay:0.08s} .action-row:nth-child(3){transition-delay:0.16s} .action-row:nth-child(4){transition-delay:0.24s} .action-row:nth-child(5){transition-delay:0.32s} .action-row:nth-child(6){transition-delay:0.40s} .action-row:nth-child(7){transition-delay:0.48s}
+.action-dot { width: 9px; height: 9px; border-radius: 50%; background: var(--gold); flex-shrink: 0; }
+.action-dot.pending { background: rgba(0,32,91,0.18); }
+.action-text { font-size: 13px; color: var(--navy); font-weight: 400; flex: 1; line-height: 1.4; }
+.action-tag { font-size: 10px; padding: 3px 10px; border-radius: 100px; font-weight: 500; letter-spacing: 0.05em; flex-shrink: 0; }
+.action-tag.done { background: rgba(0,56,123,0.1); color: var(--navy-mid); }
+.action-tag.progress { background: rgba(200,169,110,0.18); color: #7a5c1e; }
+.action-tag.todo { background: rgba(0,0,0,0.05); color: #666; }
+
+/* FOOTER */
+.footer { background: var(--navy); padding: 36px 7vw; display: flex; justify-content: space-between; align-items: center; border-top: 1px solid rgba(200,169,110,0.18); }
+.footer-brand { font-family: 'Playfair Display', serif; font-size: 18px; font-weight: 700; }
+.footer-brand span { color: var(--gold); }
+.footer-meta { font-size: 12px; color: rgba(255,255,255,0.38); text-align: right; line-height: 1.7; }
+
+/* UTILS */
+@keyframes fadeUp { to { opacity: 1; transform: translateY(0); } }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(-6px); } to { opacity: 1; transform: translateY(0); } }
+.reveal { opacity: 0; transform: translateY(22px); transition: opacity 0.7s ease, transform 0.7s ease; }
+.reveal.visible { opacity: 1; transform: translateY(0); }
+.reveal.delay-1 { transition-delay: 0.1s; }
+.reveal.delay-2 { transition-delay: 0.2s; }
+
+@media (max-width: 900px) {
+  .purpose-grid, .interests-intro, .next-grid, .conversa-grid { grid-template-columns: 1fr; gap: 36px; }
+  .steps-track { grid-template-columns: 1fr; }
+  .steps-track::before { display: none; }
+  .nuclei-grid, .ant-needs-grid, .hallazgos-grid, .conversa-stat-row { grid-template-columns: repeat(2, 1fr); }
+  .data-cards-grid, .ant-grid, .team-grid { grid-template-columns: 1fr; }
+  .footer { flex-direction: column; gap: 16px; text-align: center; }
+  .footer-meta { text-align: center; }
+}
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-pattern"></div>
+  <div class="hero-rings"></div>
+  <div class="hero-content">
+    <p class="hero-eyebrow">Bienestar y Experiencia del Estudiante · UniSabana 2026-1</p>
+    <h1 class="hero-title">Sabana,<br>tu <span>Segundo</span><br>Hogar</h1>
+    <p class="hero-sub">Una comunidad para quienes llegan de lejos y construyen aquí su segundo hogar.</p>
+    <p class="hero-obj">Consolidar un entorno universitario en el que los estudiantes foráneos encuentren en la Universidad un verdadero segundo hogar, a través de la construcción de amistades significativas y experiencias de formación integral que fortalezcan su sentido de comunidad y permanencia.</p>
+    <div class="scroll-hint" onclick="document.querySelector('.section-purpose').scrollIntoView({behavior:'smooth'})">
+      <div class="scroll-line"></div>
+      Conoce el proyecto
+    </div>
+  </div>
+</section>
+
+<!-- PURPOSE -->
+<section class="section-purpose">
+  <div class="purpose-grid">
+    <div>
+      <p class="purpose-label reveal">Por qué existe</p>
+      <h2 class="purpose-heading reveal delay-1">Lejos de casa,<br>cerca de aquí</h2>
+      <p class="purpose-body reveal delay-2">Los estudiantes foráneos enfrentan una transición doble: adaptarse a la vida universitaria <em>y</em> a un entorno completamente nuevo. Sin redes de apoyo sólidas, esta soledad afecta el bienestar, la permanencia y el éxito académico.</p>
+      <div class="objetivo-pill reveal delay-2">Dirección: Jefatura de Experiencia del Estudiante · DBEE</div>
+    </div>
+    <div class="challenge-cards">
+      <div class="challenge-card">
+        <div class="challenge-icon">🧩</div>
+        <div>
+          <p class="challenge-title">Aislamiento social</p>
+          <p class="challenge-desc">Soledad, nostalgia y redes personales reducidas dificultan la adaptación y la búsqueda de apoyo oportuno.</p>
+        </div>
+      </div>
+      <div class="challenge-card">
+        <div class="challenge-icon">🗺️</div>
+        <div>
+          <p class="challenge-title">Choque cultural</p>
+          <p class="challenge-desc">Normas nuevas, movilidad desconocida y miedo a equivocarse frenan la integración real con la comunidad universitaria.</p>
+        </div>
+      </div>
+      <div class="challenge-card">
+        <div class="challenge-icon">📉</div>
+        <div>
+          <p class="challenge-title">Riesgo académico</p>
+          <p class="challenge-desc">La falta de sentido de pertenencia reduce el rendimiento y compromete la permanencia universitaria.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- EQUIPO -->
+<section class="section-team">
+  <p class="section-label reveal">Equipo del programa</p>
+  <p class="reveal delay-1" style="font-family:'Playfair Display',serif;font-size:clamp(24px,3vw,38px);font-weight:700;line-height:1.1;margin-bottom:36px">Quiénes lo hacen posible</p>
+  <div class="team-grid">
+    <div class="team-card"><div class="team-avatar">RM</div><p class="team-name">Ruth Alejandra Montaño Pérez</p></div>
+    <div class="team-card"><div class="team-avatar">SB</div><p class="team-name">Santiago Bedoya Barahona</p></div>
+    <div class="team-card"><div class="team-avatar">CQ</div><p class="team-name">Christopher Andrey Quintero</p></div>
+    <div class="team-card"><div class="team-avatar">CR</div><p class="team-name">Camilo Antonio Roncancio Camacho</p></div>
+    <div class="team-card"><div class="team-avatar">MP</div><p class="team-name">María José Pérez Abril</p></div>
+  </div>
+</section>
+
+<!-- ANTECEDENTES -->
+<section class="section-antecedentes">
+  <p class="section-label dark reveal">Cómo llegamos aquí</p>
+  <h2 class="section-heading dark reveal delay-1">Una necesidad<br><span style="color:var(--navy-mid)">que ya era visible</span></h2>
+  <p class="ant-intro reveal delay-2">Antes del programa, varias áreas ya detectaban las mismas señales. La iniciativa nació de escuchar eso con atención y articular una respuesta conjunta entre dependencias.</p>
+  <div class="ant-grid">
+    <div class="ant-card">
+      <div class="ant-icon">📞</div>
+      <h3 class="ant-title">Tu Línea Amiga</h3>
+      <p class="ant-desc">Detectó una tendencia en estudiantes foráneos a reportar dificultades de adaptación y construcción de vínculos. La señal más recurrente: soledad intensa los fines de semana y dificultad para conformar redes estables.</p>
+    </div>
+    <div class="ant-card">
+      <div class="ant-icon">🤝</div>
+      <h3 class="ant-title">Mentis + Solidaridad</h3>
+      <p class="ant-desc">Sus procesos de acompañamiento individual y grupos focales coincidieron en evidenciar las mismas necesidades: ansiedad, estrés, duelo por la distancia y retos de vida independiente como cocinar o manejar finanzas.</p>
+    </div>
+    <div class="ant-card">
+      <div class="ant-icon">🌐</div>
+      <h3 class="ant-title">Relaciones Internacionales</h3>
+      <p class="ant-desc">El <strong>Buddy Program</strong> ya existía como buena práctica consolidada: acompañamiento entre pares con formación en liderazgo y multiculturalidad. Un referente clave a integrar al programa.</p>
+    </div>
+  </div>
+  <p class="ant-needs-label reveal">Dificultades más frecuentes identificadas</p>
+  <div class="ant-needs-grid">
+    <div class="ant-need">⏰ Manejo del tiempo libre</div>
+    <div class="ant-need">💬 Relaciones sociales sostenidas</div>
+    <div class="ant-need">👥 Conformación de equipos de trabajo</div>
+    <div class="ant-need">😔 Soledad y ansiedad</div>
+    <div class="ant-need">🍳 Vida independiente (cocinar, finanzas)</div>
+    <div class="ant-need">🏠 Duelo por la distancia del hogar</div>
+  </div>
+</section>
+
+<!-- PROCESO -->
+<section class="section-process">
+  <p class="section-label reveal">Lo que hemos hecho</p>
+  <h2 class="section-heading reveal delay-1">Proceso en marcha</h2>
+  <div class="steps-track">
+    <div class="step">
+      <div class="step-num-wrap done"><span class="step-num">1</span></div>
+      <p class="step-status">Completado</p>
+      <h3 class="step-title">Convocar y conectar</h3>
+      <p class="step-date">Previo al 6 de marzo · 2026</p>
+      <ul class="step-items">
+        <li>Formulario de inscripción y retroalimentación</li>
+        <li>Difusión en redes y bases de Experiencia UniSabana</li>
+        <li>Grupo de WhatsApp con participantes</li>
+        <li>Reserva del espacio Nexus</li>
+      </ul>
+    </div>
+    <div class="step">
+      <div class="step-num-wrap done"><span class="step-num">2</span></div>
+      <p class="step-status">Completado</p>
+      <h3 class="step-title">Club de Foráneos</h3>
+      <p class="step-date">6 de marzo · 3PM – 5PM</p>
+      <ul class="step-items">
+        <li>24 estudiantes — nacionales e internacionales</li>
+        <li>Dinámica participativa: 5 núcleos de interés</li>
+        <li>Karaoke y Just Dance como cierre social</li>
+        <li>29 estudiantes vinculados al finalizar</li>
+      </ul>
+    </div>
+    <div class="step">
+      <div class="step-num-wrap done"><span class="step-num">3</span></div>
+      <p class="step-status">Completado</p>
+      <h3 class="step-title">Conversa con el Vice</h3>
+      <p class="step-date">18 de abril · Arena Sabana</p>
+      <ul class="step-items">
+        <li>225 estudiantes convocados por correo</li>
+        <li>8 participantes de 6 departamentos</li>
+        <li>Satisfacción: 4.75 / 5</li>
+        <li>6 hallazgos clave para el programa</li>
+      </ul>
+    </div>
+    <div class="step">
+      <div class="step-num-wrap next"><span class="step-num">4</span></div>
+      <p class="step-status coming">Próxima sesión</p>
+      <h3 class="step-title">Activar los núcleos</h3>
+      <p class="step-date coming">20 o 22 de mayo · por confirmar</p>
+      <ul class="step-items">
+        <li class="coming-item">Actividad desde intereses reales</li>
+        <li class="coming-item">Música + social, comida + cultura</li>
+        <li class="coming-item">Articulación con áreas DBEE</li>
+        <li class="coming-item">Comunidad WhatsApp activa</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- CONVERSA DETALLE -->
+<section class="section-conversa">
+  <p class="section-label reveal">Resultado en detalle</p>
+  <h2 class="section-heading reveal delay-1">Conversa con el Vice<br><span style="font-size:0.65em;font-weight:400;color:rgba(255,255,255,0.45)">18 de abril · Arena Sabana</span></h2>
+  <div class="conversa-grid">
+    <div>
+      <div class="conversa-stat-row">
+        <div class="cstat">
+          <div class="cstat-num">225</div>
+          <div class="cstat-desc">estudiantes convocados por correo institucional</div>
+        </div>
+        <div class="cstat">
+          <div class="cstat-num">8</div>
+          <div class="cstat-desc">participantes presentes en el encuentro</div>
+        </div>
+        <div class="cstat">
+          <div class="cstat-num">6</div>
+          <div class="cstat-desc">departamentos del país representados</div>
+        </div>
+      </div>
+      <div class="reveal">
+        <div class="sat-label">Satisfacción promedio <span>4.75 / 5</span></div>
+        <div class="sat-bar"><div class="sat-fill" id="satBar"></div></div>
+      </div>
+    </div>
+    <div class="reveal">
+      <p class="conversa-body">El 18 de abril en Arena Sabana se realizó el primer espacio formal del programa. Aunque la participación fue limitada frente al universo convocado, el encuentro generó un espacio cercano y significativo, con valoraciones altamente positivas y hallazgos clave para orientar el programa hacia 2026-2.</p>
+      <p class="conversa-body" style="margin-top:16px;color:rgba(255,255,255,0.45)">Participaron estudiantes de:</p>
+      <div class="conversa-programs">
+        <span class="prog-tag">Ingeniería Industrial</span>
+        <span class="prog-tag">Com. Audiovisual y Multimedios</span>
+        <span class="prog-tag">Derecho</span>
+        <span class="prog-tag">Gastronomía</span>
+      </div>
+    </div>
+  </div>
+  <p class="hallazgos-label reveal">Hallazgos del encuentro</p>
+  <div class="hallazgos-grid">
+    <div class="hallazgo"><div class="hallazgo-icon">💰</div><p class="hallazgo-text">Interés en habilidades para la vida independiente: educación financiera, cocina y herramientas prácticas para vivir solos.</p></div>
+    <div class="hallazgo"><div class="hallazgo-icon">🤝</div><p class="hallazgo-text">Necesidad de espacios de integración social para construir amistades y redes de apoyo dentro de la universidad.</p></div>
+    <div class="hallazgo"><div class="hallazgo-icon">🌎</div><p class="hallazgo-text">Valoración de actividades que reconozcan la diversidad regional e identidad cultural, fortaleciendo el sentido de pertenencia.</p></div>
+    <div class="hallazgo"><div class="hallazgo-icon">👫</div><p class="hallazgo-text">Alta receptividad hacia estrategias de acompañamiento entre pares: clubes de foráneos o modelos tipo Buddy Program.</p></div>
+    <div class="hallazgo"><div class="hallazgo-icon">📅</div><p class="hallazgo-text">Interés en actividades sociales y recreativas durante fines de semana, en espacios adaptados a sus gustos.</p></div>
+    <div class="hallazgo"><div class="hallazgo-icon">📣</div><p class="hallazgo-text">Necesidad de convocatorias más atractivas y cercanas que conecten mejor con el propósito de construir comunidad.</p></div>
+  </div>
+</section>
+
+<!-- INTERESES -->
+<section class="section-interests">
+  <div class="interests-intro">
+    <div>
+      <p class="section-label reveal">Lo que ellos dijeron</p>
+      <h2 class="section-heading reveal delay-1">Sus intereses,<br>nuestro diseño</h2>
+      <p class="interests-body reveal delay-2">En la primera sesión los estudiantes mapearon sus propios intereses. El resultado no es una lista: son sistemas de experiencias interconectadas. Lo social no es un interés más — <em>es el contexto en el que ocurren todos los demás</em>.</p>
+    </div>
+    <div class="insight-box reveal">
+      <p class="insight-quote">"El interés social no es opcional: es el contexto en el que ocurren todos los demás."</p>
+      <p class="insight-attr">Hallazgo principal · Dinámica participativa, 6 de marzo 2026</p>
+    </div>
+  </div>
+  <div class="nuclei-grid">
+    <div class="nucleus"><div class="nucleus-emoji">🎵</div><p class="nucleus-name">Música</p><p class="nucleus-tags">bailar · artistas · géneros · socializar</p></div>
+    <div class="nucleus"><div class="nucleus-emoji">👥</div><p class="nucleus-name">Social</p><p class="nucleus-tags">amigos · salir · planes · conocer gente</p></div>
+    <div class="nucleus"><div class="nucleus-emoji">🌍</div><p class="nucleus-name">Exploración</p><p class="nucleus-tags">viajar · culturas · museos · naturaleza</p></div>
+    <div class="nucleus"><div class="nucleus-emoji">🍽️</div><p class="nucleus-name">Gastronomía</p><p class="nucleus-tags">comida nueva · cocinar · café · restaurantes</p></div>
+    <div class="nucleus"><div class="nucleus-emoji">🎬</div><p class="nucleus-name">Cultura</p><p class="nucleus-tags">cine · series · arte · leer · escribir</p></div>
+  </div>
+</section>
+
+<!-- DATOS -->
+<section class="section-data">
+  <p class="section-label reveal">En cifras</p>
+  <h2 class="section-heading reveal delay-1">Lo que sabemos<br><span style="color:var(--gold)">y lo que queremos saber</span></h2>
+  <p class="data-intro reveal delay-2">Toca cada tarjeta para ver más detalle. Las marcadas con <em>objetivo</em> son datos que aún no tenemos pero que queremos levantar para 2026-2.</p>
+  <div class="data-cards-grid">
+
+    <div class="data-card" onclick="toggleData(this)">
+      <div class="data-card-front">
+        <div class="data-big">225</div>
+        <div class="data-desc">estudiantes foráneos identificados en base de datos institucional</div>
+      </div>
+      <div class="data-card-detail">
+        <p>A partir de la base de datos institucional se identificaron 225 estudiantes foráneos, quienes fueron convocados al encuentro "Conversa con el Vice" del 18 de abril.</p>
+        <p style="margin-top:8px">Este es el universo de referencia con el que opera actualmente el programa para sus convocatorias.</p>
+      </div>
+    </div>
+
+    <div class="data-card" onclick="toggleData(this)">
+      <div class="data-card-front">
+        <div class="data-big">81</div>
+        <div class="data-desc">foráneos identificados en Ciencias Políticas, Jurídicas e Internacionales</div>
+      </div>
+      <div class="data-card-detail">
+        <p>Se han mapeado 81 estudiantes foráneos pertenecientes a la Facultad de Ciencias Políticas, Jurídicas e Internacionales, convirtiéndola en la facultad con mayor número de foráneos identificados hasta el momento.</p>
+        <p style="margin-top:8px">Este dato abre la posibilidad de diseñar estrategias focalizadas para esta facultad en 2026-2.</p>
+      </div>
+    </div>
+
+    <div class="data-card" onclick="toggleData(this)">
+      <div class="data-card-front">
+        <div class="data-big">73</div>
+        <div class="data-desc">foráneos identificados en grupos artísticos representativos</div>
+      </div>
+      <div class="data-card-detail">
+        <p>De los integrantes registrados en los 15 grupos artísticos representativos de la universidad, 73 son estudiantes provenientes de otras regiones del país.</p>
+        <p style="margin-top:8px">Esto equivale al <strong>15%</strong> del total de participantes en grupos representativos — una presencia significativa que evidencia el vínculo natural entre foráneos y cultura.</p>
+        <p style="margin-top:8px;font-style:italic;opacity:0.6">Fuente: Desarrollo Cultural · 2026</p>
+      </div>
+    </div>
+
+    <div class="data-card" onclick="toggleData(this)">
+      <div class="data-card-front">
+        <div class="data-big">29</div>
+        <div class="data-desc">estudiantes vinculados al club tras el primer encuentro</div>
+      </div>
+      <div class="data-card-detail">
+        <p>De los 24 asistentes al primer encuentro del 6 de marzo, 29 estudiantes —incluyendo algunos que se sumaron después— manifestaron interés en mantener el vínculo con la iniciativa.</p>
+        <p style="margin-top:8px">Provienen de diversas regiones del país y distintos programas académicos.</p>
+      </div>
+    </div>
+
+    <div class="data-card" onclick="toggleData(this)">
+      <div class="data-card-front">
+        <div class="data-big">4.75</div>
+        <div class="data-desc">satisfacción promedio sobre 5 — Conversa con el Vice</div>
+      </div>
+      <div class="data-card-detail">
+        <p>La mayoría de los participantes calificó la experiencia como muy satisfactoria. En los comentarios se destacó la pertinencia del espacio y el interés por contar con encuentros más frecuentes.</p>
+        <p style="margin-top:8px;font-style:italic;opacity:0.6">Fuente: evaluación aplicada al cierre · 18 de abril 2026</p>
+      </div>
+    </div>
+
+    <div class="data-card objetivo" onclick="toggleData(this)">
+      <div class="data-card-front">
+        <div class="data-big">?</div>
+        <div class="data-desc">regiones de origen más frecuentes entre los foráneos</div>
+        <div class="data-tag objetivo-tag">Objetivo a identificar</div>
+      </div>
+      <div class="data-card-detail">
+        <p>Aún no contamos con información sobre de qué regiones del país proviene el conjunto de estudiantes foráneos matriculados.</p>
+        <p style="margin-top:8px"><strong>¿Por qué importa?</strong> La diversidad regional es un activo que, si se nombra, genera identidad colectiva y sentido de pertenencia.</p>
+        <p style="margin-top:8px;color:var(--gold-light)">→ Dato levantable en próximas sesiones del club y con apoyo de Registro y Admisiones</p>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- PRÓXIMOS PASOS -->
+<section class="section-next">
+  <div class="next-grid">
+    <div>
+      <p class="purpose-label reveal">Siguientes pasos</p>
+      <h2 class="next-heading reveal delay-1">Seguimos<br>construyendo</h2>
+      <p class="next-body reveal delay-2">La segunda sesión tomará como base los núcleos de interés y los hallazgos del "Conversa con el Vice". El objetivo para 2026-2 es consolidar una línea formativa con cronograma claro, más participación y articulación real entre áreas.</p>
+      <div class="date-badge reveal">📅 &nbsp; Próxima sesión: 20 o 22 de mayo</div>
+    </div>
+    <div class="next-actions">
+      <div class="action-row"><div class="action-dot"></div><p class="action-text">Confirmar fecha de la segunda sesión (20 o 22 de mayo)</p><span class="action-tag progress">En curso</span></div>
+      <div class="action-row"><div class="action-dot pending"></div><p class="action-text">Explorar elementos del Buddy Program para integrar al programa</p><span class="action-tag todo">Pendiente</span></div>
+      <div class="action-row"><div class="action-dot pending"></div><p class="action-text">Alinear con el equipo de formadores la visión y propósitos pedagógicos</p><span class="action-tag todo">Pendiente</span></div>
+      <div class="action-row"><div class="action-dot pending"></div><p class="action-text">Diseñar la línea formativa del programa para 2026-2</p><span class="action-tag todo">Pendiente</span></div>
+      <div class="action-row"><div class="action-dot pending"></div><p class="action-text">Estructurar cronograma de encuentros con objetivos formativos claros</p><span class="action-tag todo">Pendiente</span></div>
+      <div class="action-row"><div class="action-dot pending"></div><p class="action-text">Levantar datos: total foráneos, distribución por facultad y regiones</p><span class="action-tag todo">Pendiente</span></div>
+      <div class="action-row"><div class="action-dot"></div><p class="action-text">Mantener comunidad activa en WhatsApp</p><span class="action-tag done">Activo</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="footer-brand">Sabana, tu <span>Segundo Hogar</span></div>
+  <div class="footer-meta">Dirección de Bienestar y Experiencia del Estudiante · UniSabana</div>
+</footer>
+
+<script>
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+      if (entry.target.id === 'satBar') {
+        setTimeout(() => { entry.target.style.width = '95%'; }, 100);
+      }
+    }
+  });
+}, { threshold: 0.15 });
+
+document.querySelectorAll(
+  '.reveal, .challenge-card, .step, .nucleus, .action-row, .ant-card, .ant-need, .hallazgo, .cstat, .team-card'
+).forEach(el => observer.observe(el));
+
+const satBar = document.getElementById('satBar');
+if (satBar) observer.observe(satBar);
+
+function toggleData(card) {
+  const isOpen = card.classList.contains('open');
+  document.querySelectorAll('.data-card.open').forEach(c => c.classList.remove('open'));
+  if (!isOpen) card.classList.add('open');
+}
+</script>
+</body>
+</html>
